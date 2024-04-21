@@ -53,7 +53,7 @@ const LineContent: React.FC = () => {
   };
 
   const handleDeleteCashier = (cashierIndex: number) => {
-    if (queues[cashierIndex].length === 0) {
+    if (queues[cashierIndex]?.length === 0) {
       setShowPopup(true);
     } else {
       setQueues((prevQueues) => {
