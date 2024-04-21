@@ -11,6 +11,7 @@ const LineContent: React.FC = () => {
   const [emptyWarning, setEmptyWarning] = useState<boolean>(false);
   const [duplicateWarning, setDuplicateWarning] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [deletedCashierIndex, setDeletedCashierIndex] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -53,20 +54,23 @@ const LineContent: React.FC = () => {
   };
 
   const handleDeleteCashier = (cashierIndex: number) => {
-    if (queues[cashierIndex]?.length === 0) {
+    const isQueueEmpty = queues[cashierIndex]?.length === 0;
+
+    if (isQueueEmpty) {
+      setDeletedCashierIndex(cashierIndex);
       setShowPopup(true);
     } else {
       setQueues((prevQueues) => {
         const newQueues = [...prevQueues];
         if (newQueues[cashierIndex] !== undefined) {
-          const updatedQueue = newQueues[cashierIndex].slice(1);
-          newQueues[cashierIndex] = updatedQueue;
+          const updatedQueue = newQueues[cashierIndex]?.slice(1);
+          if (updatedQueue !== undefined) {
+            newQueues[cashierIndex] = updatedQueue;
+          }
         }
         return newQueues;
       });
     }
-    setEmptyWarning(false);
-    setDuplicateWarning(false);
   };
 
   return (
@@ -134,19 +138,19 @@ const LineContent: React.FC = () => {
           </div>
           <div className="flex flex-col gap-2 w-1/5">
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2 transition duration-300 ease-in-out transform hover:scale-110"
               onClick={() => handleDeleteCashier(0)}
             >
               Delete Cashier 1
             </button>
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2 transition duration-300 ease-in-out transform hover:scale-110"
               onClick={() => handleDeleteCashier(1)}
             >
               Delete Cashier 2
             </button>
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+              className=" bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline ml-2 transition-transform duration-300 transform hover:scale-110"
               onClick={() => handleDeleteCashier(2)}
             >
               Delete Cashier 3
@@ -160,11 +164,18 @@ const LineContent: React.FC = () => {
           <div className="bg-white p-8 rounded-lg shadow-lg z-10">
             <div className="text-center mb-4">
               <h2 className="text-3xl font-bold text-red-600">Warning alert!</h2>
-              <p className="text-lg my-2 font-semibold">No data is Deleted.</p>
+              {deletedCashierIndex !== null && (
+                <p className="text-lg my-2 font-semibold">
+                  No data is deleted for Cashier {deletedCashierIndex + 1}.
+                </p>
+              )}
             </div>
             <button
-              onClick={() => setShowPopup(false)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => {
+                setShowPopup(false);
+                setDeletedCashierIndex(null);
+              }}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:animate-pulse"
             >
               Close
             </button>
