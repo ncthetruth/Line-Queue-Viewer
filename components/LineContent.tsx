@@ -58,7 +58,10 @@ const LineContent: React.FC = () => {
     } else {
       setQueues((prevQueues) => {
         const newQueues = [...prevQueues];
-        newQueues[cashierIndex] = newQueues[cashierIndex].slice(1);
+        if (newQueues[cashierIndex] !== undefined) {
+          const updatedQueue = newQueues[cashierIndex].slice(1);
+          newQueues[cashierIndex] = updatedQueue;
+        }
         return newQueues;
       });
     }
