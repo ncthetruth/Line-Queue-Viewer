@@ -38,8 +38,9 @@ const LineContent: React.FC = () => {
       const newItem: QueueItem = { id: Date.now(), name: newName };
       setQueues((prevQueues) => {
         const updatedQueues = [...prevQueues];
+        const cashierQueue = updatedQueues[randomCashierIndex] || [];
         updatedQueues[randomCashierIndex] = [
-          ...updatedQueues[randomCashierIndex],
+          ...cashierQueue,
           newItem,
         ];
         return updatedQueues;
