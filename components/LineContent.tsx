@@ -56,6 +56,7 @@ const handleDeleteCashier = (cashierIndex: number) => {
   if (isQueueEmpty) {
     setDeletedCashierIndex(cashierIndex);
     setShowPopup(true);
+    setEmptyWarning(false);
   } else {
     setQueues((prevQueues) => {
     const newQueues = [...prevQueues];
@@ -75,7 +76,7 @@ const handleDeleteCashier = (cashierIndex: number) => {
         <div className="flex flex-wrap justify-evenly mt-5">
           {queues.map((queue, index) => (
             <div
-              className="basis-[34%)] mt-5 mr-1 flex flex-col items-center"
+              className="mt-5 mr-1 flex flex-col items-center"
               key={index}
             >
               <div className="bg-blue-500 p-8 rounded-md hover:animate-pulse">
@@ -101,10 +102,10 @@ const handleDeleteCashier = (cashierIndex: number) => {
             </div>
           ))}
         </div>
-        <div className="bg-[#F7EEDD] fixed left-0 w-full bottom-0 p-4">
+        <div className="bg-[#F7EEDD] fixed bottom-1 rounded-3xl p-4 w-[55%] left-1/2 transform -translate-x-1/2 border-solid border-2 border-blue-400">
           <form
             onSubmit={handleSubmit}
-            className="flex justify-center gap-44 items-center"
+            className="flex justify-center gap-40 items-center"
           >
             <div className="flex flex-col">
               <div>
